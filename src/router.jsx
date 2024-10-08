@@ -1,11 +1,17 @@
+import {createBrowserRouter} from "react-router-dom";
+import MainPage from "./MainPage.jsx";
+import LayoutMain from "./layout/LayoutMain.jsx";
 
-
-export const defaultLayout = null;
-export const routes = [
+const router = createBrowserRouter([
     {
         path: "/",
-        layout: null,
-        isPrivate: false,
-        component: null
+        element: <LayoutMain />,
+        children: [{
+            path: "/",
+            element: <MainPage />,
+
+        }]
     }
-];
+])
+
+export default router;
