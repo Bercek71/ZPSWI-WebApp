@@ -3,6 +3,9 @@ import {Link} from "react-router-dom";
 import * as PropTypes from "prop-types";
 
 export default function RoomCard({room}) {
+    if (!room) {
+        throw new Error("Room object is required!");
+    }
     return <Card>
         <CardMedia
             component="img"
