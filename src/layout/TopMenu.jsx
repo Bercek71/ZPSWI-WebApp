@@ -82,7 +82,7 @@ const TopMenu = () => {
                 </Toolbar>
             </AppBar>
 
-            <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+            <Drawer anchor="left" open={drawerOpen} onClose={() => toggleDrawer(false)}>
                 {drawerItems}
             </Drawer>
         </Box>

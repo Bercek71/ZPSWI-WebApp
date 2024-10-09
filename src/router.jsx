@@ -4,6 +4,7 @@ import LayoutMain from "./layout/LayoutMain.jsx";
 import LoginPage from './LoginPage.jsx';
 import RegisterPage from './RegisterPage.jsx';
 import RoomDetailPage from "./RoomDetailPage.jsx";
+import {mainPageLoader} from "./loaders/mainPageLoader.jsx";
 
 const router = createBrowserRouter([
     {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <MainPage />,
+                loader: mainPageLoader
             },
             {
                 path: "room/:roomId",

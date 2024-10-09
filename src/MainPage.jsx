@@ -1,5 +1,5 @@
-import { Container, Grid, Card, CardMedia, CardContent, Button, Typography, TextField, Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import {Box, Button, Container, Grid, TextField, Typography} from '@mui/material';
+import RoomCard from "./components/MainPage/RoomCard.jsx";
 
 const featuredRooms = [
     { id: 1, name: 'Room 1', location: 'S105', price: 1000, image: 'https://a.allegroimg.com/original/11ae3f/fb0875dc40dfb4d65fc8add1cd0b/Fototapeta-AUTORSKA-Obraz-Divky-400x200' },
@@ -10,12 +10,8 @@ const featuredRooms = [
     { id: 6, name: 'Room 6', location: 'S111', price: 1000, image: 'https://a.allegroimg.com/original/11ae3f/fb0875dc40dfb4d65fc8add1cd0b/Fototapeta-AUTORSKA-Obraz-Divky-400x200' },
 ];
 
-export default function MainPage() {
-    const navigate = useNavigate();
 
-    const handleBookNow = (roomId) => {
-        navigate(`/room/${roomId}`);
-    };
+export default function MainPage() {
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4 }}>
@@ -63,33 +59,7 @@ export default function MainPage() {
             <Grid container spacing={4}>
                 {featuredRooms.map((room) => (
                     <Grid item xs={12} sm={6} md={4} key={room.id}>
-                        <Card>
-                            <CardMedia
-                                component="img"
-                                height="200"
-                                image={room.image}
-                                alt={room.name}
-                            />
-                            <CardContent>
-                                <Typography variant="h6" component="div" gutterBottom>
-                                    {room.name}
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    {room.location}
-                                </Typography>
-                                <Typography variant="body1" component="p" sx={{ mt: 1, fontWeight: 'bold' }}>
-                                    {room.price} CZK / night
-                                </Typography>
-                                <Button
-                                    variant="contained"
-                                    sx={{ mt: 2 }}
-                                    fullWidth
-                                    onClick={() => handleBookNow(room.id)}
-                                >
-                                    Book Now
-                                </Button>
-                            </CardContent>
-                        </Card>
+                        <RoomCard room={room}/>
                     </Grid>
                 ))}
             </Grid>
