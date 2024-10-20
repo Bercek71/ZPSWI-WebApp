@@ -1,10 +1,6 @@
-import {RouterProvider} from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import router from "./router.jsx";
 
-export default function RouteWrapper(){
-
-    return(
-        <RouterProvider router={router} />
-    )
-
+export default function RouteWrapper() {
+    return <RouterProvider router={router} />;
 }

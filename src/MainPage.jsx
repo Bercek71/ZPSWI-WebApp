@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
-import CountryCard from "./components/MainPage/CountryCard.jsx"; // Adjust path as necessary
+import {Box, Container, Grid, IconButton, Typography} from '@mui/material';
+import CountryCard from "./components/MainPage/CountryCard.jsx";
 import { useNavigate } from 'react-router-dom';
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
 
 export default function MainPage() {
     const [countries, setCountries] = useState([]);
@@ -35,19 +37,23 @@ export default function MainPage() {
                 </Typography>
             </Box>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 6 }}>
-                <TextField
-                    id="country-search"
-                    label="Enter Country Name"
-                    variant="outlined"
-                    sx={{ mr: 2, width: '300px' }}
+            <Box
+                display="flex"
+                backgroundColor="#e0e0e0"
+                borderRadius="3px"
+                sx={{ mb: 6 }}
+            >
+                <InputBase
+                    sx={{ ml: 2, flex: 1 }}
+                    placeholder="Enter Country Name"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Button variant="contained" color="primary" sx={{ height: '56px' }}>
-                    Search
-                </Button>
+                <IconButton type="button" sx={{ p: 1 }} >
+                    <SearchIcon />
+                </IconButton>
             </Box>
+
 
             <Typography variant="h4" fontWeight="bold" sx={{ mb: 3 }}>
                 Featured Countries
@@ -56,7 +62,7 @@ export default function MainPage() {
             <Grid container spacing={4}>
                 {filteredCountries.map((country) => (
                     <Grid item xs={12} sm={6} md={4} key={country.id}>
-                        <CountryCard country={country} onClick={() => handleCountryClick(country)} /> {/* Click to navigate */}
+                        <CountryCard country={country} onClick={() => handleCountryClick(country)} />
                     </Grid>
                 ))}
             </Grid>
