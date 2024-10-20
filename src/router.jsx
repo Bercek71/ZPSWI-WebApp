@@ -4,7 +4,12 @@ import LayoutMain from "./layout/LayoutMain.jsx";
 import LoginPage from './LoginPage.jsx';
 import RegisterPage from './RegisterPage.jsx';
 import RoomDetailPage from "./RoomDetailPage.jsx";
-import {mainPageLoader} from "./loaders/mainPageLoader.jsx";
+import HotelListPage from "./HotelListPage.jsx";
+import RoomListPage from "./RoomListPage.jsx";
+import { mainPageLoader } from "./loaders/mainPageLoader.jsx";
+import { hotelListLoader } from "./loaders/hotelListLoader.jsx";
+import { roomListLoader } from "./loaders/roomListLoader.jsx";
+import { roomDetailLoader } from "./loaders/roomDetailLoader.jsx";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +24,7 @@ const router = createBrowserRouter([
             {
                 path: "room/:roomId",
                 element: <RoomDetailPage />,
+                loader: roomDetailLoader
             },
             {
                 path: "login",
@@ -28,6 +34,16 @@ const router = createBrowserRouter([
                 path: "register",
                 element: <RegisterPage />,
             },
+            {
+                path: "hotels/:countryId",
+                element: <HotelListPage />,
+                loader: hotelListLoader
+            },
+            {
+                path: "hotel/:hotelId/rooms",
+                element: <RoomListPage />,
+                loader: roomListLoader
+            }
         ]
     }
 ]);
