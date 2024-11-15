@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {Box, Container, Grid, IconButton, Typography} from '@mui/material';
-import CountryCard from "./components/MainPage/CountryCard.jsx";
+import CountryCard from "../components/MainPage/CountryCard.jsx";
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";

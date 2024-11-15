@@ -1,9 +1,11 @@
+import Config from "../config.jsx";
+
 export async function roomListLoader({ params }) {
     const { hotelId } = params;
 
     try {
 
-        const hotelResponse = await fetch(`http://127.0.0.1:8080/hotels/${hotelId}`);
+        const hotelResponse = await fetch(`${Config.webApiUrl}/hotels/${hotelId}`);
         if (!hotelResponse.ok) {
             throw new Error("Failed to fetch hotel details");
         }

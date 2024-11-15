@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Config from "../config.jsx";
 
 export default function useHotelSearch({ hotels, checkIn, checkOut, guests, cityId }) {
     const [filteredHotels, setFilteredHotels] = useState(hotels);
@@ -11,7 +12,7 @@ export default function useHotelSearch({ hotels, checkIn, checkOut, guests, city
         if (cityId) searchParams.append('cityId', cityId);
 
         try {
-            const response = await fetch(`http://127.0.0.1:8080/hotels?${searchParams.toString()}`);
+            const response = await fetch(`${Config.webApiUrl}/hotels?${searchParams.toString()}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

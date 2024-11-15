@@ -1,5 +1,7 @@
+import Config from "../config";
+
 export async function mainPageLoader() {
-    const response = await fetch("http://localhost:8080/rooms");
+    const response = await fetch(Config.webApiUrl + "/rooms");
     if (response.ok) {
         return response.json();
     } else {

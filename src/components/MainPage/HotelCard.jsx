@@ -23,7 +23,7 @@ export default function HotelCard({ hotel }) {
                     {hotel.name}
                 </Typography>
                 <Typography variant="body1" color="textSecondary">
-                    Country: {hotel.country.name}
+                    Country: {"hotel.country.name"}
                 </Typography>
             </CardContent>
         </Card>

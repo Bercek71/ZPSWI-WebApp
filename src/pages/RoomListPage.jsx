@@ -1,8 +1,8 @@
 import { useLoaderData } from 'react-router-dom';
 import { Box, Grid, Typography, Card, CardContent, CardMedia, Divider, Rating } from '@mui/material';
-import RoomCard from './components/Rooms/RoomCard.jsx'; // Component to display room details
+import RoomCard from '../components/Rooms/RoomCard.jsx'; // Component to display room details
 import { useState } from 'react';
-import FilterBar from './components/FilterBar.jsx'; // Reusable Filter component
+import FilterBar from '../components/FilterBar.jsx'; // Reusable Filter component
 
 export default function RoomListPage() {
     const { rooms, hotel } = useLoaderData();

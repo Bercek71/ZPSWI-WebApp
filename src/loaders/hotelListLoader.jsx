@@ -1,4 +1,5 @@
 // loaders/hotelListLoader.jsx
+import Config from '../config.jsx';
 export async function hotelListLoader({ params, request }) {
     const { countryId } = params;
 
@@ -9,7 +10,7 @@ export async function hotelListLoader({ params, request }) {
     const cityId = url.searchParams.get('cityId');
 
     try {
-        const apiUrl = new URL('http://127.0.0.1:8080/hotels');
+        const apiUrl = new URL(Config.webApiUrl + '/hotels');
 
         if (checkIn) apiUrl.searchParams.append('checkIn', checkIn);
         if (checkOut) apiUrl.searchParams.append('checkOut', checkOut);

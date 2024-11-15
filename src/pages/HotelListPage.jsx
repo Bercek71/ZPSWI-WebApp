@@ -1,10 +1,10 @@
 import { useLoaderData } from 'react-router-dom';
 import { Button, Box, TextField, FormControl, InputLabel, Select, MenuItem, Typography, Grid } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import HotelCard from './components/MainPage/HotelCard.jsx';
+import HotelCard from '../components/MainPage/HotelCard.jsx';
 import { useState } from 'react';
-import useCityLoader from './loaders/useCityLoader';
-import useHotelSearch from './loaders/useHotelSearch';
+import useCityLoader from '../loaders/useCityLoader.jsx';
+import useHotelSearch from '../loaders/useHotelSearch.jsx';
 
 export default function HotelListPage() {
     const { hotels, countryId } = useLoaderData();

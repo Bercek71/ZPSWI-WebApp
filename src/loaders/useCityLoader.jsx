@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Config from "../config.jsx";
 
 export default function useCityLoader() {
     const [cities, setCities] = useState([]);
@@ -6,7 +7,7 @@ export default function useCityLoader() {
     useEffect(() => {
         const fetchCities = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8080/cities');
+                const response = await fetch(Config.webApiUrl + '/cities');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

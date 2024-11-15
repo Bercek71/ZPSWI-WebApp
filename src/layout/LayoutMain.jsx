@@ -4,6 +4,8 @@ import Sidebar from "../components/Sidebar.jsx";
 import { Box } from '@mui/material';
 
 export default function LayoutMain() {
+
+
     return (
         <Box sx={{ display: 'flex', height: '100vh' }}>
 
