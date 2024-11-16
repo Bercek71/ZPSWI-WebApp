@@ -109,6 +109,7 @@ export async function ajaxRegister(url, data) {
         },
         body: JSON.stringify(data),
     });
+    console.log(response)
 
     if(!response.ok) {
         throw new Error(`Failed to register: ${response.status}`);

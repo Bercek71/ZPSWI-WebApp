@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {ajaxValidateToken} from "./ajax.jsx";
 import {useNavigate} from "react-router-dom";
 import Roles from "../model/Roles.jsx";
-import Loading from "../Loading.jsx";
+import Loading from "./Loading.jsx";
 
 const AuthorizationContext = React.createContext();
 export default function Authorization({rolesAllowed, invisibleForUnauthorized, children}) {
@@ -44,7 +44,7 @@ export default function Authorization({rolesAllowed, invisibleForUnauthorized, c
       }
     }
 
-  }, [invisibleForUnauthorized, navigate, rolesAllowed]);
+  }, [children, invisibleForUnauthorized, navigate, rolesAllowed]);
 
   return (
     <AuthorizationContext.Provider value={loggedUser}>

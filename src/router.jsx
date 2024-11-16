@@ -29,6 +29,7 @@ import AdminCountryForm from "./admin/Forms/AdminCountryForm.jsx";
 import AdminReservationList from "./admin/Lists/AdminReservationList.jsx";
 import AdminReservationForm from "./admin/Forms/AdminReservationForm.jsx";
 import Roles from "./model/Roles.jsx";
+import Authorization from "./components/Authorization.jsx";
 
 const router = createBrowserRouter([
   {
@@ -56,7 +57,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminDashboard/>,
+    element:
+    <Authorization rolesAllowed={[Roles.ADMIN]}>
+      <AdminDashboard/>
+    </Authorization>
+    ,
     children: [
       {path: "hotels", element: <AdminHotelList/>},
       {path: "add-hotel", element: <AdminHotelForm/>},
