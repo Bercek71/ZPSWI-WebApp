@@ -1,5 +1,16 @@
 import { useLoaderData } from 'react-router-dom';
-import { Button, Box, TextField, FormControl, InputLabel, Select, MenuItem, Typography, Grid } from '@mui/material';
+import {
+  Button,
+  Box,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Typography,
+  Grid,
+  Container
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import HotelCard from '../components/MainPage/HotelCard.jsx';
 import { useState } from 'react';
@@ -19,7 +30,7 @@ export default function HotelListPage() {
     });
 
     return (
-        <Box sx={{ mt: 4 }}>
+        <Container sx={{ mt: 4}}>
             {/* Form pro hledání */}
             <Box sx={{ mb: 4 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -78,10 +89,7 @@ export default function HotelListPage() {
                     onClick={handleSearch}
                     fullWidth
                     sx={{
-                        backgroundColor: '#1976d2',
-                        color: 'white',
                         '&:hover': {
-                            backgroundColor: '#115293',
                             transform: 'scale(1.05)',
                             transition: 'background-color 0.3s ease, transform 0.3s ease',
                         },
@@ -113,6 +121,6 @@ export default function HotelListPage() {
                     )}
                 </Grid>
             </Box>
-        </Box>
+        </Container>
     );
 }

@@ -12,7 +12,7 @@ export default function CountryCard({ country, onClick }) {
                         <img
                             src={flagUrl}
                             alt={`${country.name} flag`}
-                            style={{ width: '100%', height: 'auto', maxHeight: '100px' }}
+                            style={{ width: 'auto', height: 'auto',  maxHeight: '100px' }}
                         />
                     </Box>
                     <Typography variant="h5" component="div">

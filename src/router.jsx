@@ -44,23 +44,43 @@ const router = createBrowserRouter([
         , loader: mainPageLoader
       },
       {path: "room/:roomId", element: <RoomDetailPage/>, loader: roomDetailLoader},
-      {path: "login", element: <LoginPage/>},
       {path: "register", element: <RegisterPage/>},
-      {path: "hotels/:countryId", element:
+      {
+        path: "hotels/:countryId", element:
           <HotelListPage/>
-            , loader: hotelListLoader},
-      {path: "hotels", element:
+        , loader: hotelListLoader
+      },
+      {
+        path: "hotels", element:
           <HotelListPage/>
-            , loader: hotelListLoader},
+        , loader: hotelListLoader
+      },
       {path: "hotel/:hotelId/rooms", element: <RoomListPage/>, loader: roomListLoader}
     ]
   },
   {
+    path: "/login",
+    element: <LayoutMain showLoginAndRegister={false} showNav={false}/>,
+    children: [
+      {
+        path: "/login", element: <LoginPage/>,
+      }
+    ]
+  },
+  {
+    path: "/register",
+    element: <LayoutMain showLoginAndRegister={false} showNav={false}/>,
+    children: [
+      {
+        path: "/register", element: <RegisterPage/>,
+      }]
+  },
+  {
     path: "/admin",
     element:
-    <Authorization rolesAllowed={[Roles.ADMIN]}>
-      <AdminDashboard/>
-    </Authorization>
+      <Authorization rolesAllowed={[Roles.ADMIN]}>
+        <AdminDashboard/>
+      </Authorization>
     ,
     children: [
       {path: "hotels", element: <AdminHotelList/>},
