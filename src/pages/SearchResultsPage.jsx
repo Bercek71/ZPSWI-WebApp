@@ -36,6 +36,7 @@ export default function SearchResultsPage() {
 
   useEffect(() => {
     if(searchParams){
+      setError(null);
       setIsLoading(true);
       const cityId = searchParams.get("cityId");
       const countryId = searchParams.get("countryId");
@@ -45,15 +46,17 @@ export default function SearchResultsPage() {
 
       hotelListLoader({checkIn, checkOut, guests, cityId}).then((data) => {
         setHotelList(data);
+
         if(data.length > 0) {
-          console.log(data[0]?.address?.city?.country);
           setCountry(data[0]?.address?.city?.country);
         }
+        setIsLoading(false);
+      }).catch((e) => {
+        setError("No hotels found");
         setIsLoading(false);
       })
     }
   }, [searchParams]);
-  console.log(country)
   const handleSortChange = (event) => {
     setSortOption(event.target.value);
     // Implement sorting based on the selected option
@@ -71,6 +74,31 @@ export default function SearchResultsPage() {
   const handleViewModeChange = (event) => {
     setViewMode(event.target.value);
   };
+
+  if(error){
+    return (
+      <>
+    <Search
+      top={"16%"}
+      onChange={(e, value) => {
+        if (value?.type === "city") {
+          setCityId(value?.id);
+          setCountryId(countryId);
+        } else {
+          setCityId(null);
+          setCountryId(value?.id);
+        }
+      }}
+      defaultCityId={defaultCityId} defaultCountryId={defaultCountryId}
+      cityId={cityId} countryId={countryId}
+      checkInValue={checkIn} onCheckinChange={(e) => setCheckIn(e.target.value)} checkOutValue={checkOut}
+      onCheckOutChange={(e) => setCheckOut(e.target.value)} guestsValue={guests}
+      onGuestsChange={(e) => e.target.value > 0 ? setGuests(e.target.value) : null}/>
+
+        <Typography variant={"h1"} sx={{textAlign: 'center', mt: 10}}>{error}</Typography>
+
+      </>)
+  }
 
   return (
     <>

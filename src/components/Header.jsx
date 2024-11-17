@@ -7,7 +7,6 @@ export default function Header({showLoginAndRegister = true, showNav = true}) {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location)
   return (
     <Box sx={{
       position: 'relative',

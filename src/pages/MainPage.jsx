@@ -19,7 +19,6 @@ export default function MainPage() {
       const lastSearchResultsString = localStorage.getItem("lastSearchResults");
       try {
         const lastSearchResults = JSON.parse(lastSearchResultsString);
-        console.log(lastSearchResults)
         setLastSearchResults(lastSearchResults);
 
       } catch (e) {
