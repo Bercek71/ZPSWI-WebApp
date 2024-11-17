@@ -1,10 +1,11 @@
 import {useCallback, useState} from 'react';
-import {Box, Button, Container, Grid, Grid2, InputAdornment, TextField, Typography} from '@mui/material';
+import {Box, Button, Container, Grid, Grid2, InputAdornment, Select, TextField, Typography} from '@mui/material';
 import {SubmitButton} from "../components/SubmitButton.jsx";
-import {ConfirmationNumber, Email, Key, PersonAdd} from "@mui/icons-material";
+import {ConfirmationNumber, Email, Hotel, Key, PersonAdd} from "@mui/icons-material";
 import RolePickDialog from "../components/register/RolePickDialog.jsx";
 import {ajaxRegister} from "../components/ajax.jsx";
 import Config from "../config.jsx";
+import AddressForm from "../components/register/AddressForm.jsx";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -16,25 +17,34 @@ export default function RegisterPage() {
   const [firstName, setFirstName] = useState('');
   const [role, setRole] = useState('User');
   const [openDialog, setOpenDialog] = useState(false);
+  const [hotelName, setHotelName] = useState('');
+  const [addressFormValues, setAddressFormValues] = useState({
+    address: '',
+    houseNumber: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: '',
+  });
 
   const handleRegister = useCallback(async (event) => {
     setIsLoading(true)
-      if(!firstName || !lastName || !email || !password){
-        setError("All fields are required");
-        setIsLoading(false)
-        return;
-      }
-    if(password !== confirmPassword){
+    if (!firstName || !lastName || !email || !password) {
+      setError("All fields are required");
+      setIsLoading(false)
+      return;
+    }
+    if (password !== confirmPassword) {
       setError("Passwords do not match");
       setIsLoading(false)
       return;
     }
-    if(password.length < 6){
+    if (password.length < 6) {
       setError("Password must be at least 6 characters long");
       setIsLoading(false)
       return;
     }
-    if(!email.includes("@") || !email.includes(".")){
+    if (!email.includes("@") || !email.includes(".")) {
       setError("Invalid email");
       setIsLoading(false)
       return;
@@ -44,10 +54,15 @@ export default function RegisterPage() {
 
     try {
       const lowerRole = role.toUpperCase();
-      const response = await ajaxRegister(Config.webApiUrl + "/register", {firstName, lastName, email, password, role: lowerRole});
+      const response = await ajaxRegister(Config.webApiUrl + "/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+        role: lowerRole
+      });
       console.log(response);
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
       setError("Error occured during registration. Please try again later.");
 
@@ -72,8 +87,8 @@ export default function RegisterPage() {
             <TextField
               error={error && !firstName}
               label={"First Name"} fullWidth sx={{mb: 2}}
-                       value={firstName}
-                       onChange={(e) => setFirstName(e.target.value)}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
 
             />
           </Grid2>
@@ -91,7 +106,7 @@ export default function RegisterPage() {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <Email />
+                  <Email/>
                 </InputAdornment>
               ),
             },
@@ -110,7 +125,7 @@ export default function RegisterPage() {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <Key />
+                  <Key/>
                 </InputAdornment>
               ),
             },
@@ -127,7 +142,7 @@ export default function RegisterPage() {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <ConfirmationNumber />
+                  <ConfirmationNumber/>
                 </InputAdornment>
               ),
             },
@@ -140,13 +155,41 @@ export default function RegisterPage() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           sx={{mb: 2}}
         />
+        {role === "Hotel Owner" &&
+          <>
+            <Typography variant="h2" sx={{mt: 2}}>
+              Hotel information
+            </Typography>
+            <TextField
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Hotel/>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              fullWidth
+              error={error && !hotelName}
+              label="Hotel Name"
+              type="text"
+              value={hotelName}
+              onChange={(e) => setHotelName(e.target.value)}
+              sx={{mb: 2}}
+            />
+            {/* Select for address */}
+            <AddressForm error={error} formValues={addressFormValues} setFormValues={setAddressFormValues} />
+          </>
+        }
 
-        <SubmitButton text={"Register"} onSubmit={handleRegister} isLoading={isLoading} error={error}
+        <SubmitButton  text={"Register"} onSubmit={handleRegister} isLoading={isLoading} error={error}
                       icon={<PersonAdd/>}/>
         <RolePickDialog open={openDialog} onClose={(value) => {
           setRole(value);
           setOpenDialog(false);
         }} value={role}/>
+
 
       </Box>
     </Container>

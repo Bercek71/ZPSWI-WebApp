@@ -23,7 +23,7 @@ export function SubmitButton(props) {
 
   return(
   <>
-    <Button onClick={handleSubmit} sx={{transition: "all 0.3s ease"}} color={isError ? "error" : "primary"}
+    <Button onClick={handleSubmit} sx={{transition: "all 0.3s ease", mb: 5}} color={isError ? "error" : "primary"}
             disabled={props.isLoading} type="submit" variant="contained" fullWidth>
       {props?.text} {props.isLoading ?
       <CircularProgress size={20} sx={{marginX: 1}}/> : React.cloneElement(props.icon, {sx: {marginX: 1}})}
