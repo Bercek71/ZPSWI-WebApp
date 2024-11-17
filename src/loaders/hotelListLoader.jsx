@@ -1,36 +1,20 @@
 // loaders/hotelListLoader.jsx
 import Config from '../config.jsx';
-export async function hotelListLoader({ params, request }) {
-    const { countryId } = params;
-
-    const url = new URL(request.url);
-    const checkIn = url.searchParams.get('checkIn');
-    const checkOut = url.searchParams.get('checkOut');
-    const guests = url.searchParams.get('guests');
-    const cityId = url.searchParams.get('cityId');
-
+export async function hotelListLoader({checkIn, checkOut, guests, cityId}) {
     try {
-        const apiUrl = new URL(Config.webApiUrl + '/hotels');
-
-        if (checkIn) apiUrl.searchParams.append('checkIn', checkIn);
-        if (checkOut) apiUrl.searchParams.append('checkOut', checkOut);
-        if (guests) apiUrl.searchParams.append('guests', guests);
-        if (cityId) apiUrl.searchParams.append('cityId', cityId);
-        if (countryId) apiUrl.searchParams.append('countryId', countryId);
-
-        const response = await fetch(apiUrl);
-
+      const response = await fetch(`${Config.webApiUrl}/hotels?checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}&cityId=${cityId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error('Failed to load hotels');
         }
 
         const data = await response.json();
 
-        const filteredHotels = data.filter(hotel =>
-            !countryId || hotel.country.id === parseInt(countryId)
-        );
-
-        return { hotels: filteredHotels, countryId };
+        return data;
     } catch (error) {
         console.error('Error fetching hotels:', error);
         throw new Error('Failed to load hotels');

@@ -1,4 +1,4 @@
-import {Autocomplete, Box, IconButton, InputAdornment, Stack, TextField, useTheme} from "@mui/material";
+import {Autocomplete, Box, IconButton, InputAdornment, Stack, TextField, useControlled, useTheme} from "@mui/material";
 import useCityLoader from "../../loaders/useCityLoader.jsx";
 import {useCallback, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -15,13 +15,25 @@ export function Search(props) {
   const [error, setError] = useState(null);
   const {enqueueSnackbar} = useSnackbar();
   const [options, setOptions] = useState([]);
+  const [autoVal, setAutoVal] = useState();
 
   useEffect(() => {
-    if(cities && countries){
+    if (cities && countries) {
       setOptions(cities.map((city) => ({...city, type: 'city'})).concat(countries.map((country) => ({
         ...country,
         type: 'country'
       }))));
+    }
+    if (props.defaultCityId) {
+      const city = cities.find(city => city.id === props.defaultCityId);
+      if (city) {
+        setAutoVal({...city, type: 'city'});
+      }
+    } else if (props.defaultCountryId) {
+      const country = countries.find(country => country.id === props.defaultCountryId);
+      if (country) {
+        setAutoVal({...country, type: 'country'});
+      }
     }
   }, [cities, countries]);
 
@@ -34,7 +46,6 @@ export function Search(props) {
     }
     if (props.cityId) {
       searchParams.cityId = props.cityId;
-      searchParams.countryId = props.countryId;
     } else if (props.countryId) {
       searchParams.countryId = props.countryId;
     }
@@ -51,7 +62,7 @@ export function Search(props) {
     const city = cities.find(city => city.id === searchParams.cityId);
     const searchParamsExtended = {...searchParams, countryName: country?.name, cityName: city?.name};
 
-    if(localStorage.getItem('lastSearchResults')){
+    if (localStorage.getItem('lastSearchResults')) {
 
 
       const lastSearchResultsString = localStorage.getItem("lastSearchResults");
@@ -59,7 +70,11 @@ export function Search(props) {
         const lastSearchResults = JSON.parse(lastSearchResultsString);
         if (lastSearchResults.length > 0) {
 
-          localStorage.setItem("lastSearchResults", JSON.stringify([searchParamsExtended, ...lastSearchResults]));
+          if (lastSearchResults.length < 5) {
+            localStorage.setItem("lastSearchResults", JSON.stringify([searchParamsExtended, ...lastSearchResults]));
+          } else {
+            localStorage.setItem("lastSearchResults", JSON.stringify([searchParamsExtended, ...lastSearchResults.slice(0, 4)]));
+          }
         }
       } catch (e) {
         localStorage.removeItem("lastSearchResults");
@@ -79,7 +94,6 @@ export function Search(props) {
       .then(data => setCountries(data))
       .catch(error => console.error('Error fetching countries:', error));
   }, []);
-  console.log(options)
   return <Box
     sx={{
       position: "absolute",
@@ -107,10 +121,15 @@ export function Search(props) {
           </li>
         )}
         getOptionKey={(option) => option.id + option.type}
+        value={autoVal ?? null}
         getOptionLabel={(option) => option.name}
         options={options}
-
-        onChange={props.onChange}
+        onChange={(event, value, reason, details) => {
+          setAutoVal(value);
+          if (props.onChange) {
+            props.onChange(event, value)
+          }
+        }}
         sx={{width: 300, backgroundColor: "white", color: "white"}}
         renderInput={(params) => <TextField
           {...params}

@@ -24,7 +24,6 @@ export default function LastSearchResultCard({searchResult}) {
     navigate("/search-results?" + new URLSearchParams(searchRes).toString());
   }, [navigate, searchResult]);
 
-  console.log(searchResult)
   if(!searchResult){
     return null;
   }
