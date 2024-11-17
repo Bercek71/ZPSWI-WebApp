@@ -1,12 +1,13 @@
 import {Box, Button, Stack, Typography, useTheme} from "@mui/material";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {Hotel, Public} from "@mui/icons-material";
 import React from "react";
 
 export default function Header({showLoginAndRegister = true, showNav = true}) {
   const theme = useTheme();
   const navigate = useNavigate();
-  const [active, setActive] = React.useState("hotels");
+  const location = useLocation();
+  console.log(location)
   return (
     <Box sx={{
       position: 'relative',
@@ -34,7 +35,7 @@ export default function Header({showLoginAndRegister = true, showNav = true}) {
         component="nav"
         sx={{display: "flex", alignItems: "center", justifyContent: "space-between", marginLeft: 20}}
       >
-        <Typography marginTop={2} pad variant="h6" fontWeight="bold" fontFamily="monospace" gutterBottom onClick={() => navigate("/")} >
+        <Typography marginTop={2} variant="h6" fontWeight="bold" fontFamily="monospace" gutterBottom onClick={() => navigate("/")} >
           Lidl-Hotel.com
         </Typography>
         {showLoginAndRegister &&
@@ -57,11 +58,11 @@ export default function Header({showLoginAndRegister = true, showNav = true}) {
 
       {showNav &&
         <Stack direction={"row"} spacing={2} sx={{marginLeft: 19, marginTop: 1}}>
-        <Button onClick={() => setActive("hotel")} variant={active === "hotel" ? "outlined" : "text"}
-                startIcon={<Hotel/>} color={"info"} sx={{borderRadius: 5}} component={Link} to={"/hotels"}>
+        <Button variant={location.pathname === "/" ? "outlined" : "text"}
+                startIcon={<Hotel/>} color={"info"} sx={{borderRadius: 5}} component={Link} to={"/"}>
           Hotels
         </Button>
-        <Button onClick={() => setActive("destinations")} variant={active === "destinations" ? "outlined" : "text"}
+        <Button variant={location.pathname === "/hotels" ? "outlined" : "text"}
                 startIcon={<Public/>} color={"info"} sx={{borderRadius: 5}} component={Link} to={"/hotels"}>
           Destinations
         </Button>

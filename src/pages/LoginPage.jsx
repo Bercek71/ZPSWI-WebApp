@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
-import {Box, Container, TextField, Typography} from '@mui/material';
+import {Box, Container, InputAdornment, TextField, Typography} from '@mui/material';
 import {useNavigate} from "react-router-dom";
-import {Login} from "@mui/icons-material";
+import {Email, Key, Login} from "@mui/icons-material";
 import {SubmitButton} from "../components/SubmitButton.jsx";
 import {ajaxLogin} from "../components/ajax.jsx";
 import Config from "../config.jsx";
@@ -43,6 +43,15 @@ export default function LoginPage() {
         <TextField
           fullWidth
           label="Email"
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Email />
+                </InputAdornment>
+              ),
+            },
+          }}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -50,6 +59,15 @@ export default function LoginPage() {
         />
         <TextField
           fullWidth
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Key />
+                </InputAdornment>
+              ),
+            },
+          }}
           label="Password"
           type="password"
           value={password}

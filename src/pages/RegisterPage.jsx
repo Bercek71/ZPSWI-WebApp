@@ -1,7 +1,7 @@
 import {useCallback, useState} from 'react';
-import {Box, Button, Container, Grid, Grid2, TextField, Typography} from '@mui/material';
+import {Box, Button, Container, Grid, Grid2, InputAdornment, TextField, Typography} from '@mui/material';
 import {SubmitButton} from "../components/SubmitButton.jsx";
-import {PersonAdd} from "@mui/icons-material";
+import {ConfirmationNumber, Email, Key, PersonAdd} from "@mui/icons-material";
 import RolePickDialog from "../components/register/RolePickDialog.jsx";
 import {ajaxRegister} from "../components/ajax.jsx";
 import Config from "../config.jsx";
@@ -87,6 +87,15 @@ export default function RegisterPage() {
         </Grid2>
 
         <TextField
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Email />
+                </InputAdornment>
+              ),
+            },
+          }}
           fullWidth
           error={!!((error && !email) || (email && !email.includes("@")) || (email && !email.includes(".")))}
           label="Email"
@@ -97,6 +106,15 @@ export default function RegisterPage() {
         />
         <TextField
           fullWidth
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Key />
+                </InputAdornment>
+              ),
+            },
+          }}
           error={!!(error && !password || password.length !== 0 && password.length < 6)}
           label="Password"
           type="password"
@@ -105,6 +123,15 @@ export default function RegisterPage() {
           sx={{mb: 2}}
         />
         <TextField
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <ConfirmationNumber />
+                </InputAdornment>
+              ),
+            },
+          }}
           fullWidth
           error={!!(password !== confirmPassword || error && !confirmPassword)}
           label="Confirm Password"

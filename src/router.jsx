@@ -30,6 +30,7 @@ import AdminReservationList from "./admin/Lists/AdminReservationList.jsx";
 import AdminReservationForm from "./admin/Forms/AdminReservationForm.jsx";
 import Roles from "./model/Roles.jsx";
 import Authorization from "./components/Authorization.jsx";
+import SearchResultsPage from "./pages/SearchResultsPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
             <MainPage/>
           </Authorization>
         , loader: mainPageLoader
+      },
+      {
+        path: "/search-results",
+        element: <SearchResultsPage />,
       },
       {path: "room/:roomId", element: <RoomDetailPage/>, loader: roomDetailLoader},
       {path: "register", element: <RegisterPage/>},

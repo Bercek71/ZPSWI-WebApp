@@ -1,6 +1,6 @@
 import RouteWrapper from "./components/RouteWrapper.jsx";
 import {SnackbarProvider} from "notistack";
-import {createTheme, ThemeProvider} from "@mui/material";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import "./App.css"
 
 
@@ -12,6 +12,7 @@ import "./App.css"
 // #6A2C70
 
 const theme = createTheme({
+  fontFamily: "Open Sans",
   palette:
     {
       primary: {
@@ -35,6 +36,7 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <SnackbarProvider maxSnack={4}>
           <RouteWrapper/>
         </SnackbarProvider>
