@@ -61,8 +61,8 @@ export default function Header({showLoginAndRegister = true, showNav = true}) {
                 startIcon={<Hotel/>} color={"info"} sx={{borderRadius: 5}} component={Link} to={"/"}>
           Hotels
         </Button>
-        <Button variant={location.pathname === "/hotels" ? "outlined" : "text"}
-                startIcon={<Public/>} color={"info"} sx={{borderRadius: 5}} component={Link} to={"/hotels"}>
+        <Button variant={location.pathname === "/destinations" ? "outlined" : "text"}
+                startIcon={<Public/>} color={"info"} sx={{borderRadius: 5}} component={Link} to={"/destinations"}>
           Destinations
         </Button>
 

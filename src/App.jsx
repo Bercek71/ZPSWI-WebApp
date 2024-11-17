@@ -2,6 +2,8 @@ import RouteWrapper from "./components/RouteWrapper.jsx";
 import {SnackbarProvider} from "notistack";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import "./App.css"
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {LocalizationProvider} from "@mui/x-date-pickers";
 
 
 // using theme pallete:
@@ -37,9 +39,11 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
         <SnackbarProvider maxSnack={4}>
           <RouteWrapper/>
         </SnackbarProvider>
+        </LocalizationProvider>
       </ThemeProvider>
     </>
   )

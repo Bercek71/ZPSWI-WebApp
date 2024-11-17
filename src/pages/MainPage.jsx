@@ -31,7 +31,7 @@ export default function MainPage() {
   return (
     <>
       <Box sx={{
-        textAlign: 'center',
+        textAlign: 'left',
         position: 'relative',
         overflow: 'hidden',
         // Add background image to the Box
@@ -52,12 +52,15 @@ export default function MainPage() {
         },
       }}>
 
-        <Typography sx={{paddingBottom: 5}} variant="h3" fontWeight="bold" gutterBottom>
+        <Typography sx={{ml: 23}} variant="h3" fontWeight="bold" gutterBottom>
           Welcome to Country & Hotel Finder
+        </Typography>
+        <Typography sx={{paddingBottom: 5, ml: 23}} variant="h5" gutterBottom>
+          Find your next hotel, destination and adventure...
         </Typography>
       </Box>
       <Search
-              top={"28%"}
+              top={"285px"}
               onChange={(e, value) => {
                 if (value.type === "city") {
                   setCityId(value.id);
@@ -86,7 +89,6 @@ export default function MainPage() {
             </Carousel>
           </>
       }
-
 
       <Typography variant={"h5"} fontWeight={"bold"} sx={{mt: 10, mb: 3}}>
         Popular Destinations

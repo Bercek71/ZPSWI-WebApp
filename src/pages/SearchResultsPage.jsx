@@ -79,7 +79,7 @@ export default function SearchResultsPage() {
     return (
       <>
     <Search
-      top={"16%"}
+      top={"140px"}
       onChange={(e, value) => {
         if (value?.type === "city") {
           setCityId(value?.id);
@@ -103,7 +103,7 @@ export default function SearchResultsPage() {
   return (
     <>
       <Search
-        top={"16%"}
+        top={"140px"}
         onChange={(e, value) => {
           if (value?.type === "city") {
             setCityId(value?.id);
@@ -120,7 +120,7 @@ export default function SearchResultsPage() {
         onGuestsChange={(e) => e.target.value > 0 ? setGuests(e.target.value) : null}/>
 
       {/* Breadcrumbs for navigation */}
-      <Box sx={{mt: 10, mx: 4}}>
+      <Box sx={{mt: 10, mx: 23}}>
       <Breadcrumbs sx={{mt: 2}}>
         <Link color="inherit" href="/">
           Home
@@ -174,7 +174,7 @@ export default function SearchResultsPage() {
           ))}
         </Carousel>}
 
-        {viewMode !== "grid" && <Stack direction={"column"} spacing={2}>
+        {viewMode !== "grid" && <Stack direction={"column"} spacing={2} sx={{overflow: "scroll"}}>
           {hotelList.map(hotel => (
             <HotelCard hotel={hotel} key={hotel.id}/>
           ))}

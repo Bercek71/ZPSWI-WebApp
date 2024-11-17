@@ -14,7 +14,8 @@ export default function HotelCard({ hotel }) {
       <Card
         sx={{
           display: 'flex', // Flex layout for left-right arrangement
-          maxWidth: 800,
+          width: 500,
+          height: 250,
           marginBottom: 2,
           borderRadius: 2,
           boxShadow: 3,
@@ -64,23 +65,6 @@ export default function HotelCard({ hotel }) {
             Free Wi-Fi, Pool, 24/7 Concierge
           </Typography>
 
-          {/* Button to view rooms */}
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{
-              borderRadius: 2,
-              fontWeight: 'bold',
-              textTransform: 'none',
-              backgroundColor: '#007bff',
-              '&:hover': {
-                backgroundColor: '#0056b3',
-              },
-            }}
-          >
-            View Rooms
-          </Button>
         </CardContent>
       </Card>
     );

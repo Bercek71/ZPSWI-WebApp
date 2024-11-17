@@ -1,11 +1,26 @@
 import {useEffect, useState} from "react";
 import {useParams, useSearchParams} from "react-router-dom";
 import {Search} from "../components/MainPage/Search.jsx";
-import {Box, Card, CardContent, CardMedia, Divider, Grid, Paper, Typography} from "@mui/material";
+import {
+  Box, Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Dialog, DialogActions, DialogContent,
+  DialogTitle,
+  Divider,
+  IconButton,
+  Paper,
+  Typography
+} from "@mui/material";
 import Loading from "../components/Loading.jsx";
 import Config from "../config.jsx";
 
-export default  function HotelDetailPage(){
+function CloseIcon() {
+  return null;
+}
+
+export default function HotelDetailPage() {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [guests, setGuests] = useState(1);
@@ -18,9 +33,18 @@ export default  function HotelDetailPage(){
   const [defaultCountryId, setDefaultCountryId] = useState(parseInt(searchParams.get("countryId")));
   const {hotelId} = useParams();
   const [hotel, setHotel] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
-    if(searchParams){
+    if (searchParams) {
       setCheckIn(searchParams.get("checkIn"));
       setCheckOut(searchParams.get("checkOut"));
       setGuests(searchParams.get("guests"));
@@ -36,7 +60,6 @@ export default  function HotelDetailPage(){
       const response = await fetch(`${Config.webApiUrl}/hotels/${id}`);
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         return data;
       } else {
         throw new Error("Hotel not found");
@@ -47,7 +70,7 @@ export default  function HotelDetailPage(){
   }
 
   useEffect(() => {
-    if(hotelId){
+    if (hotelId) {
       setError(null);
       setIsLoading(true);
       loadHotel(hotelId).then((data) => {
@@ -59,52 +82,99 @@ export default  function HotelDetailPage(){
     }
   }, [hotelId]);
 
-  if(!hotel && error){
+  if (!hotel && error) {
     return <Typography variant="h5" color="error">{error}</Typography>;
   }
-  if(!hotel || isLoading){
+  if (!hotel || isLoading) {
     return <Loading visible={true}/>;
   }
 
-    return (
-      <>
-        <Search
-          top={"16%"}
-          onChange={(e, value) => {
-            if (value?.type === "city") {
-              setCityId(value?.id);
-              setCountryId(countryId);
-            } else {
-              setCityId(null);
-              setCountryId(value?.id);
-            }
-          }}
-          defaultCityId={defaultCityId} defaultCountryId={defaultCountryId}
-          cityId={cityId} countryId={countryId}
-          checkInValue={checkIn} onCheckinChange={(e) => setCheckIn(e.target.value)} checkOutValue={checkOut}
-          onCheckOutChange={(e) => setCheckOut(e.target.value)} guestsValue={guests}
-          onGuestsChange={(e) => e.target.value > 0 ? setGuests(e.target.value) : null}/>
+  return (
+    <>
+      <Search
+        top={"140px"}
+        onChange={(e, value) => {
+          if (value?.type === "city") {
+            setCityId(value?.id);
+            setCountryId(countryId);
+          } else {
+            setCityId(null);
+            setCountryId(value?.id);
+          }
+        }}
+        defaultCityId={defaultCityId} defaultCountryId={defaultCountryId}
+        cityId={cityId} countryId={countryId}
+        checkInValue={checkIn} onCheckinChange={(e) => setCheckIn(e.target.value)} checkOutValue={checkOut}
+        onCheckOutChange={(e) => setCheckOut(e.target.value)} guestsValue={guests}
+        onGuestsChange={(e) => e.target.value > 0 ? setGuests(e.target.value) : null}/>
 
-        <Box sx={{ mt: 3, px: 3 }}>
-          <Card sx={{ mb: 3 }}>
-            <CardMedia
-              component="img"
-              alt="Hotel Main Image"
-              height="300"
-              image="/path/to/hotel-image.jpg"
-            />
-            <CardContent>
-              <Typography variant="h4" gutterBottom>{hotel.name}</Typography>
-              <Typography variant="body1" color="text.secondary">
-                {hotel.address.name}, {hotel.address.city.name} - {hotel.address.city.zipCode}
-              </Typography>
-            </CardContent>
-          </Card>
+      <Box sx={{mt: 3, px: 3}}>
+        <Card sx={{mb: 3, position: "relative", height: 400, overflow: "hidden"}} onClick={handleClickOpen}>
+          <CardMedia
+            component="img"
+            alt="Hotel Main Image"
+            image="/HotelImage.jpg"
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              zIndex: 1,
+            }}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+              height: "60%",
+              zIndex: 2,
+            }}
+          />
+          <CardContent
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+              color: "black",
+              zIndex: 3,
+              padding: 2,
+              backgroundColor: "rgba(255, 255, 255, 0.85)",
+            }}
+          >
+            <Typography variant="h4" gutterBottom>{hotel.name}</Typography>
+            <Typography variant="body1" color="text.secondary">
+              {hotel.address.name}, {hotel.address.city.name} - {hotel.address.city.zipCode}
+            </Typography>
+          </CardContent>
+        </Card>
 
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h5">Available Rooms</Typography>
-            <Divider sx={{ mb: 2 }} />
-            {/*<Grid container spacing={2}>
+        {/* Modal Dialog for Image Gallery */}
+        <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+          <DialogTitle>
+            <IconButton edge="end" color="inherit" onClick={handleClose} aria-label="close"
+                        sx={{position: 'absolute', right: 8, top: 8}}>
+              <CloseIcon/>
+            </IconButton>
+            <Typography variant="h6">Hotel Gallery</Typography>
+          </DialogTitle>
+          <DialogContent sx={{display: 'flex', justifyContent: 'center'}}>
+            <img src="/HotelImage.jpg" alt="Hotel Gallery"
+                 style={{width: '100%', maxHeight: '80vh', objectFit: 'contain'}}/>
+          </DialogContent>
+          <DialogActions>
+            <Button variant={"outlined"} onClick={handleClose}>Close</Button>
+          </DialogActions>
+        </Dialog>
+
+        <Box sx={{mb: 3}}>
+          <Typography variant="h5">Available Rooms</Typography>
+          <Divider sx={{mb: 2}}/>
+          {/*<Grid container spacing={2}>
               {hotel.rooms && hotel.rooms.map((room) => (
                 <Grid item xs={12} sm={6} md={4} key={room.id}>
                   <Card elevation={3}>
@@ -127,17 +197,17 @@ export default  function HotelDetailPage(){
                 </Grid>
               ))}
             </Grid>*/}
-          </Box>
-
-          <Box sx={{ mt: 3 }}>
-            <Paper elevation={1} sx={{ p: 2 }}>
-              <Typography variant="h5" gutterBottom>About the Hotel</Typography>
-              <Typography variant="body1">
-                {hotel?.description || 'A beautiful hotel offering excellent amenities and comfortable rooms.'}
-              </Typography>
-            </Paper>
-          </Box>
         </Box>
-        </>
+
+        <Box sx={{mt: 3}}>
+          <Paper elevation={1} sx={{p: 2}}>
+            <Typography variant="h5" gutterBottom>About the Hotel</Typography>
+            <Typography variant="body1">
+              {hotel?.description || 'A beautiful hotel offering excellent amenities and comfortable rooms.'}
+            </Typography>
+          </Paper>
+        </Box>
+      </Box>
+    </>
   );
 }
