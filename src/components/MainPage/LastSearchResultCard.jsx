@@ -33,7 +33,7 @@ export default function LastSearchResultCard({searchResult}) {
     <Paper onClick={handleCardClick}
             sx={{cursor: 'pointer'}}
     >
-    <Card sx={{ display: "flex", padding: 2, gap: 2, width: "280px", height: "100%" }}>
+    <Card sx={{ display: "flex", padding: 2, gap: 2, width: "280px", height: "130px" }}>
       <CardMedia
         component="img"
         sx={{ width: 100, height: 100, borderRadius: 1 }}
@@ -42,7 +42,7 @@ export default function LastSearchResultCard({searchResult}) {
       />
       <Stack spacing={1} sx={{ flex: 1 }}>
         {/* Title */}
-        <Typography variant="h6">{searchResult?.cityName ?? searchResult?.countryName}</Typography>
+        <Typography variant="subtitle1">{searchResult?.cityName ?? searchResult?.countryName}</Typography>
 
         {/* Date and Guests Info */}
         <Stack direction="row" spacing={1} alignItems="center">
