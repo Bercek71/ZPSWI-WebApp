@@ -1,10 +1,10 @@
 import React, {useCallback} from 'react';
-import {Box, Button, Card, CardContent, CardMedia, Rating, Typography} from '@mui/material';
+import {Box, Card, CardContent, CardMedia, Rating, Typography} from '@mui/material';
 import {useNavigate, useSearchParams} from 'react-router-dom';
 
 export default function HotelCard({ hotel }) {
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, ] = useSearchParams();
 
     const handleHotelClick = useCallback (() => {
         navigate(`/hotels/${hotel.id}?` + new URLSearchParams(searchParams).toString());

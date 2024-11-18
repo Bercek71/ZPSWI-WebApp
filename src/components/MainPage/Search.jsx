@@ -1,12 +1,11 @@
-import {Autocomplete, Box, IconButton, InputAdornment, Stack, TextField, useControlled, useTheme} from "@mui/material";
+import {Autocomplete, Box, IconButton, InputAdornment, Stack, TextField, useTheme} from "@mui/material";
 import useCityLoader from "../../loaders/useCityLoader.jsx";
 import {useCallback, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {useSnackbar} from "notistack";
 import Config from "../../config.jsx";
-import {FlightLand, FlightTakeoff, LocationCity, LocationOn, People} from "@mui/icons-material";
+import {LocationCity, LocationOn, People} from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
-import {DatePicker} from "@mui/x-date-pickers";
 import {DateRangePicker, SingleInputDateRangeField} from "@mui/x-date-pickers-pro";
 import dayjs from "dayjs";
 
@@ -19,6 +18,49 @@ export function Search(props) {
   const {enqueueSnackbar} = useSnackbar();
   const [options, setOptions] = useState([]);
   const [autoVal, setAutoVal] = useState();
+  const [checkInValue, setCheckIn] = useState('');
+  const [checkOutValue, setCheckOut] = useState('');
+  const [guestsValue, setGuests] = useState(1);
+  const [cityId, setCityId] = useState(null);
+  const [countryId, setCountryId] = useState(null);
+  const [searchParams, ] = useSearchParams();
+
+  const onCheckinValueChange = (e) => setCheckIn(e.target.value);
+  const onChange = (e, value) => {
+    if (value.type === "city") {
+      setCityId(value.id);
+      setCountryId(value.countryId);
+    } else {
+      setCityId(null);
+      setCountryId(value.id);
+    }
+  };
+
+  const onCheckOutChange = (e) => setCheckOut(e.target.value)
+
+  const onGuestsChange = (e) => e.target.value > 0 ? setGuests(e.target.value) : null
+
+  useEffect(() => {
+    if (searchParams.get("checkIn")) {
+      setCheckIn(searchParams.get("checkIn"));
+    }
+    if (searchParams.get("checkOut")) {
+      setCheckOut(searchParams.get("checkOut"));
+    }
+    if (searchParams.get("guests")) {
+      setGuests(searchParams.get("guests"));
+    }
+    if(searchParams.get("cityId")){
+      setCityId(searchParams.get("cityId"));
+      cities && setAutoVal({...cities.find(city => city.id === parseInt(searchParams.get("cityId"))), type: 'city'});
+
+    }
+    if(searchParams.get("countryId")){
+      setCountryId(searchParams.get("countryId"));
+      searchParams.get("cityId") || setAutoVal({...countries.find(country => country.id === parseInt(searchParams.get("countryId"))), type: 'country'});
+    }
+
+  }, [cities, searchParams]);
 
   useEffect(() => {
     if (cities && countries) {
@@ -27,48 +69,39 @@ export function Search(props) {
         type: 'country'
       }))));
     }
-    if (props.defaultCityId) {
-      const city = cities.find(city => city.id === props.defaultCityId);
-      if (city) {
-        setAutoVal({...city, type: 'city'});
-      }
-    } else if (props.defaultCountryId) {
-      const country = countries.find(country => country.id === props.defaultCountryId);
-      if (country) {
-        setAutoVal({...country, type: 'country'});
-      }
-    }
+
   }, [cities, countries]);
 
   const handleSearchClick = useCallback(() => {
-    const searchParams = {};
-    if (!props.cityId && !props.countryId) {
+    const newSearchParams = {};
+    if (!cityId && !countryId) {
       setError("Please select destination");
       enqueueSnackbar("Please select destination", {variant: "error"});
       return;
     }
-    if (props.cityId) {
-      searchParams.cityId = props.cityId;
-    } else if (props.countryId) {
-      searchParams.countryId = props.countryId;
+    if (cityId) {
+      newSearchParams.cityId = cityId;
+
+    } else if (countryId) {
+      newSearchParams.countryId = countryId;
     }
-    if (!props.checkInValue || !props.checkOutValue) {
+    if (!checkInValue || !checkOutValue) {
       setError("Please select check-in and check-out dates");
       enqueueSnackbar("Please select check-in and check-out dates", {variant: "error"});
       return;
     } else {
-      searchParams.checkIn = props.checkInValue;
-      searchParams.checkOut = props.checkOutValue;
+      newSearchParams.checkIn = checkInValue;
+      newSearchParams.checkOut = checkOutValue;
     }
-    searchParams.guests = props.guestsValue;
-    const country = countries.find(country => country.id === searchParams.countryId);
-    const city = cities.find(city => city.id === searchParams.cityId);
+    newSearchParams.guests = guestsValue;
+    const country = countries.find(country => country.id === newSearchParams.countryId);
+    const city = cities.find(city => city.id === newSearchParams.cityId);
     if (!country?.name && !city?.name) {
-      navigate(`/search-results?${new URLSearchParams(searchParams).toString()}`);
+      navigate(`/search-results?${new URLSearchParams(newSearchParams).toString()}`);
 
       return;
     }
-    const searchParamsExtended = {...searchParams, countryName: country?.name, cityName: city?.name};
+    const searchParamsExtended = {...newSearchParams, countryName: country?.name, cityName: city?.name};
 
     if (localStorage.getItem('lastSearchResults')) {
 
@@ -92,8 +125,8 @@ export function Search(props) {
       localStorage.setItem("lastSearchResults", JSON.stringify([searchParamsExtended]));
     }
 
-    navigate(`/search-results?${new URLSearchParams(searchParams).toString()}`);
-  }, [cities, countries, enqueueSnackbar, navigate, props.checkInValue, props.checkOutValue, props.cityId, props.countryId, props.guestsValue])
+    navigate(`/search-results?${new URLSearchParams(newSearchParams).toString()}`);
+  }, [checkInValue, checkOutValue, cities, cityId, countries, countryId, enqueueSnackbar, guestsValue, navigate])
 
 
   useEffect(() => {
@@ -133,41 +166,39 @@ export function Search(props) {
         value={autoVal ?? null}
         getOptionLabel={(option) => option.name}
         options={options}
-        onChange={(event, value, reason, details) => {
+        onChange={(event, value,) => {
           setAutoVal(value);
-          if (props.onChange) {
-            props.onChange(event, value)
-          }
+          onChange(event, value);
         }}
         sx={{width: "33%", backgroundColor: "white", color: "white"}}
         renderInput={(params) => <TextField
           {...params}
-          error={error && (!props.cityId || !props.countryId)}
+          error={error && (!cityId || !countryId)}
           variant={"filled"} label="Where do you want to go?"/>}
       />
       <DateRangePicker
-        slots={{ field: SingleInputDateRangeField }}
+        slots={{field: SingleInputDateRangeField}}
         variant="filled"
         id="check-in"
         fullWidth
         sx={{mr: 2, color: "grey.200", backgroundColor: "grey.200", width: "33%"}}
-        value={[new dayjs(props.checkInValue), new dayjs(props.checkOutValue)]}
+        value={[new dayjs(checkInValue), new dayjs(checkOutValue)]}
         onChange={(value) => {
-          if(value[0]) {
+          if (value[0]) {
             const newValue = {
               target: {
                 value: `${value[0].$y}-${(value[0].$M + 1).toString().padStart(2, '0')}-${value[0].$D.toString().padStart(2, '0')}`
               }
             }
-            props.onCheckinChange(newValue);
+            onCheckinValueChange(newValue);
           }
-          if(value[1]) {
+          if (value[1]) {
             const newValue = {
               target: {
                 value: `${value[1].$y}-${(value[1].$M + 1).toString().padStart(2, '0')}-${value[1].$D.toString().padStart(2, '0')}`
               }
             }
-            props.onCheckOutChange(newValue);
+            onCheckOutChange(newValue);
           }
         }}
 
@@ -186,10 +217,9 @@ export function Search(props) {
         label="Number of Guests"
         type="number"
         variant="filled"
-        value={props.guestsValue}
-        onChange={props.onGuestsChange}
+        value={guestsValue}
+        onChange={onGuestsChange}
         sx={{mr: 2, color: "white", backgroundColor: "white", width: "33%"}}
-        inputProps={{min: 1}}
       />
 
       <IconButton onClick={handleSearchClick} type="button" sx={{p: 1, color: "white"}}>

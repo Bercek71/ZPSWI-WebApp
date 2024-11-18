@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useParams, useSearchParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {Search} from "../components/MainPage/Search.jsx";
 import {
   Box, Button,
@@ -21,16 +21,8 @@ function CloseIcon() {
 }
 
 export default function HotelDetailPage() {
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [guests, setGuests] = useState(1);
-  const [cityId, setCityId] = useState(null);
-  const [countryId, setCountryId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [defaultCityId, setDefaultCityId] = useState(parseInt(searchParams.get("cityId")));
-  const [defaultCountryId, setDefaultCountryId] = useState(parseInt(searchParams.get("countryId")));
   const {hotelId} = useParams();
   const [hotel, setHotel] = useState(null);
   const [open, setOpen] = useState(false);
@@ -42,18 +34,6 @@ export default function HotelDetailPage() {
   const handleClose = () => {
     setOpen(false);
   };
-
-  useEffect(() => {
-    if (searchParams) {
-      setCheckIn(searchParams.get("checkIn"));
-      setCheckOut(searchParams.get("checkOut"));
-      setGuests(searchParams.get("guests"));
-      setCityId(searchParams.get("cityId"));
-      setCountryId(searchParams.get("countryId"));
-    }
-
-  }, [searchParams]);
-
 
   const loadHotel = async (id) => {
     try {
@@ -91,22 +71,7 @@ export default function HotelDetailPage() {
 
   return (
     <>
-      <Search
-        top={"140px"}
-        onChange={(e, value) => {
-          if (value?.type === "city") {
-            setCityId(value?.id);
-            setCountryId(countryId);
-          } else {
-            setCityId(null);
-            setCountryId(value?.id);
-          }
-        }}
-        defaultCityId={defaultCityId} defaultCountryId={defaultCountryId}
-        cityId={cityId} countryId={countryId}
-        checkInValue={checkIn} onCheckinChange={(e) => setCheckIn(e.target.value)} checkOutValue={checkOut}
-        onCheckOutChange={(e) => setCheckOut(e.target.value)} guestsValue={guests}
-        onGuestsChange={(e) => e.target.value > 0 ? setGuests(e.target.value) : null}/>
+      <Search top={"140px"}/>
 
       <Box sx={{mt: 3, px: 3}}>
         <Card sx={{mb: 3, position: "relative", height: 400, overflow: "hidden"}} onClick={handleClickOpen}>
