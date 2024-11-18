@@ -1,7 +1,7 @@
 import {Autocomplete, Box, IconButton, InputAdornment, Stack, TextField, useTheme} from "@mui/material";
 import useCityLoader from "../../loaders/useCityLoader.jsx";
 import {useCallback, useEffect, useState} from "react";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {Form, useNavigate, useSearchParams} from "react-router-dom";
 import {useSnackbar} from "notistack";
 import Config from "../../config.jsx";
 import {LocationCity, LocationOn, People} from "@mui/icons-material";
@@ -72,7 +72,8 @@ export function Search(props) {
 
   }, [cities, countries]);
 
-  const handleSearchClick = useCallback(() => {
+  const handleSearchClick = useCallback((e) => {
+    e.preventDefault();
     const newSearchParams = {};
     if (!cityId && !countryId) {
       setError("Please select destination");
@@ -153,8 +154,8 @@ export function Search(props) {
       overflow: "visible",
     }}
   >
+    <Form onSubmit={handleSearchClick} >
     <Stack direction={"row"} spacing={0.5}>
-
       <Autocomplete
         renderOption={(props, option) => (
           <li {...props} key={props.key}>
@@ -222,10 +223,11 @@ export function Search(props) {
         sx={{mr: 2, color: "white", backgroundColor: "white", width: "33%"}}
       />
 
-      <IconButton onClick={handleSearchClick} type="button" sx={{p: 1, color: "white"}}>
+      <IconButton onSubmit={handleSearchClick} type="submit" sx={{p: 1, color: "white"}}>
         <SearchIcon/>
       </IconButton>
     </Stack>
+    </Form>
 
   </Box>;
 }
